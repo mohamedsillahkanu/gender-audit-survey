@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +7,7 @@
     <title>BBCMA Gender Audit Survey - Media Institutions (Sierra Leone)</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     
     <style>
         * {
@@ -555,6 +557,83 @@
             background: #c82333;
         }
 
+        /* GPS LOCATION */
+        .gps-container {
+            background: #e7f3ff;
+            border: 2px solid #004080;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        .gps-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .gps-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #6c757d;
+        }
+
+        .gps-icon.loading {
+            background: #ffc107;
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        .gps-icon.success {
+            background: #28a745;
+        }
+
+        .gps-icon.error {
+            background: #dc3545;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .gps-info {
+            font-size: 12px;
+            color: #000000;
+            font-weight: 700;
+        }
+
+        .gps-coords {
+            font-size: 11px;
+            color: #004080;
+            font-weight: 700;
+            font-family: monospace;
+        }
+
+        .gps-btn {
+            padding: 8px 16px;
+            background: #004080;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Oswald', Arial, sans-serif;
+            letter-spacing: 0.5px;
+            margin-top: 10px;
+        }
+
+        .gps-btn:hover {
+            background: #0056b3;
+        }
+
+        .gps-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
         /* NAVIGATION */
         .navigation-buttons {
             display: flex;
@@ -945,6 +1024,141 @@
             color: #ffffff;
         }
 
+        /* ANALYSIS DASHBOARD */
+        .analysis-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .analysis-modal.show {
+            display: flex;
+        }
+
+        .analysis-content {
+            background: #ffffff;
+            border-radius: 12px;
+            max-width: 1200px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 4px double #004080;
+            margin: auto;
+        }
+
+        .analysis-header {
+            background: #004080;
+            color: #ffffff;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .analysis-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .analysis-close {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 28px;
+            cursor: pointer;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .analysis-body {
+            padding: 30px;
+        }
+
+        .analysis-loading {
+            text-align: center;
+            padding: 60px 20px;
+            font-size: 16px;
+            color: #666;
+        }
+
+        .analysis-error {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            color: #856404;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            border: 2px solid #004080;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #004080;
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            font-weight: 700;
+        }
+
+        .stat-sublabel {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .chart-container {
+            background: #ffffff;
+            border: 2px solid #004080;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .chart-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #004080;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .chart-canvas {
+            max-height: 400px;
+        }
+
         /* RESPONSIVE */
         @media (max-width: 768px) {
             body {
@@ -976,6 +1190,14 @@
 
             .btn-nav {
                 width: 100%;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .analysis-body {
+                padding: 15px;
             }
         }
     </style>
@@ -1044,6 +1266,7 @@
             <!-- CONTROLS -->
             <div class="controls-bar">
                 <button class="control-btn" id="viewDataBtn">📊 VIEW DATA</button>
+                <button class="control-btn" id="viewAnalysisBtn">📈 VIEW ANALYSIS</button>
                 <button class="control-btn draft-btn" id="viewDraftsBtn">📝 VIEW DRAFTS</button>
                 <button class="control-btn" id="logoutBtn">LOGOUT</button>
             </div>
@@ -1120,6 +1343,21 @@
         </div>
     </div>
 
+    <!-- ANALYSIS DASHBOARD MODAL -->
+    <div class="analysis-modal" id="analysisModal">
+        <div class="analysis-content">
+            <div class="analysis-header">
+                <span class="analysis-title">📈 GENDER AUDIT ANALYSIS DASHBOARD</span>
+                <button class="analysis-close" onclick="closeAnalysisModal()">&times;</button>
+            </div>
+            <div class="analysis-body" id="analysisBody">
+                <div class="analysis-loading">
+                    <p>Loading analysis data...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- NOTIFICATION -->
     <div class="notification" id="notification">
         <span class="notification-text" id="notificationText"></span>
@@ -1130,10 +1368,10 @@
         // CONFIGURATION
         // ============================================
         const CONFIG = {
-            SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbzs_hVlsEQAu_4qeOaZUTjS_cnH3NR22ecQ8QUu5Zw_z8WpOzjnoMLo8Tm-hgQnohQ_zw/exec',
-            GOOGLE_SHEET_URL: 'https://docs.google.com/spreadsheets/d/1tumwvxOoToPYDPdpXLyGYaiT2kbfN6Vw_HBd-8t6IAA/edit?gid=0#gid=0',
-            LOGIN_USERNAME: 'bbc',
-            LOGIN_PASSWORD: 'bbc',
+            SCRIPT_URL: 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE',
+            GOOGLE_SHEET_URL: 'YOUR_GOOGLE_SHEET_URL_HERE',
+            LOGIN_USERNAME: 'admin',
+            LOGIN_PASSWORD: 'admin123',
             SHEETS: {
                 SURVEY_DATA: 'SURVEY_DATA',
                 SUMMARY: 'SUMMARY_REPORT'
@@ -1329,7 +1567,8 @@
                     respondent_contact: { label: 'Contact Number', type: 'tel' },
                     respondent_email: { label: 'Email Address', type: 'email', required: false },
                     survey_date: { label: 'Date of Survey', type: 'date' },
-                    respondent_signature: { label: 'Signature', type: 'signature' }
+                    respondent_signature: { label: 'Signature', type: 'signature' },
+                    gps_location: { label: 'GPS Location (Optional)', type: 'gps', required: false }
                 }
             }
         };
@@ -1345,6 +1584,7 @@
             currentSection: 1,
             totalSections: 0,
             signaturePads: {},
+            gpsLocation: null,
             formStatus: 'draft',
             currentDraftId: null,
             currentDraftName: null
@@ -1424,6 +1664,24 @@
                                 </div>
                             </div>
                             <input type="hidden" name="${fieldName}" id="${fieldName}" ${required ? 'required' : ''}>
+                        `;
+                    } else if (type === 'gps') {
+                        // GPS Location
+                        html += `
+                            <div class="gps-container">
+                                <div class="gps-status">
+                                    <div class="gps-icon" id="gps_icon"></div>
+                                    <div>
+                                        <div class="gps-info" id="gps_status">Click button to capture GPS location (Optional - 2 minute timeout)</div>
+                                        <div class="gps-coords" id="gps_coords"></div>
+                                    </div>
+                                </div>
+                                <button type="button" class="gps-btn" id="gps_capture_btn" onclick="captureGPS()">📍 CAPTURE GPS LOCATION</button>
+                            </div>
+                            <input type="hidden" name="gps_latitude" id="gps_latitude">
+                            <input type="hidden" name="gps_longitude" id="gps_longitude">
+                            <input type="hidden" name="gps_accuracy" id="gps_accuracy">
+                            <input type="hidden" name="gps_timestamp" id="gps_timestamp">
                         `;
                     } else if (type === 'radio') {
                         html += '<div class="radio-group">';
@@ -1507,6 +1765,7 @@
             document.getElementById('loginForm').addEventListener('submit', handleLogin);
             document.getElementById('logoutBtn').addEventListener('click', handleLogout);
             document.getElementById('viewDataBtn').addEventListener('click', handleViewData);
+            document.getElementById('viewAnalysisBtn').addEventListener('click', openAnalysisModal);
             document.getElementById('viewDraftsBtn').addEventListener('click', openDraftsModal);
             document.getElementById('dataForm').addEventListener('submit', handleFormSubmit);
             window.addEventListener('online', handleOnlineEvent);
@@ -2110,6 +2369,29 @@
                 checkbox.checked = false;
             });
             
+            // Clear GPS data
+            state.gpsLocation = null;
+            const gpsIcon = document.getElementById('gps_icon');
+            const gpsStatus = document.getElementById('gps_status');
+            const gpsCoords = document.getElementById('gps_coords');
+            const gpsBtn = document.getElementById('gps_capture_btn');
+            
+            if (gpsIcon) gpsIcon.className = 'gps-icon';
+            if (gpsStatus) gpsStatus.textContent = 'Click button to capture GPS location (Optional - 2 minute timeout)';
+            if (gpsCoords) gpsCoords.textContent = '';
+            if (gpsBtn) gpsBtn.textContent = '📍 CAPTURE GPS LOCATION';
+            
+            // Clear GPS hidden inputs
+            const gpsLatInput = document.getElementById('gps_latitude');
+            const gpsLonInput = document.getElementById('gps_longitude');
+            const gpsAccInput = document.getElementById('gps_accuracy');
+            const gpsTimeInput = document.getElementById('gps_timestamp');
+            
+            if (gpsLatInput) gpsLatInput.value = '';
+            if (gpsLonInput) gpsLonInput.value = '';
+            if (gpsAccInput) gpsAccInput.value = '';
+            if (gpsTimeInput) gpsTimeInput.value = '';
+            
             // Reset form status
             if (resetStatus) {
                 state.formStatus = 'draft';
@@ -2214,6 +2496,110 @@
         // Resize signature pads on window resize
         window.addEventListener('resize', resizeSignaturePads);
 
+        // ============================================
+        // GPS FUNCTIONS
+        // ============================================
+        function captureGPS() {
+            const statusIcon = document.getElementById('gps_icon');
+            const statusText = document.getElementById('gps_status');
+            const coordsText = document.getElementById('gps_coords');
+            const captureBtn = document.getElementById('gps_capture_btn');
+            
+            if (!navigator.geolocation) {
+                showNotification('GPS not supported by your browser', 'error');
+                if (statusIcon) statusIcon.classList.add('error');
+                if (statusText) statusText.textContent = 'GPS not supported';
+                return;
+            }
+            
+            // Show loading state
+            if (statusIcon) {
+                statusIcon.classList.remove('success', 'error');
+                statusIcon.classList.add('loading');
+            }
+            if (statusText) statusText.textContent = 'Capturing GPS location...';
+            if (captureBtn) {
+                captureBtn.disabled = true;
+                captureBtn.textContent = '⏳ CAPTURING...';
+            }
+            
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    // Success
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    const accuracy = position.coords.accuracy;
+                    const timestamp = new Date(position.timestamp).toISOString();
+                    
+                    // Store in state
+                    state.gpsLocation = {
+                        latitude,
+                        longitude,
+                        accuracy,
+                        timestamp
+                    };
+                    
+                    // Update hidden inputs
+                    const latInput = document.getElementById('gps_latitude');
+                    const lonInput = document.getElementById('gps_longitude');
+                    const accInput = document.getElementById('gps_accuracy');
+                    const timeInput = document.getElementById('gps_timestamp');
+                    
+                    if (latInput) latInput.value = latitude;
+                    if (lonInput) lonInput.value = longitude;
+                    if (accInput) accInput.value = accuracy;
+                    if (timeInput) timeInput.value = timestamp;
+                    
+                    // Update UI
+                    if (statusIcon) {
+                        statusIcon.classList.remove('loading', 'error');
+                        statusIcon.classList.add('success');
+                    }
+                    if (statusText) statusText.textContent = 'GPS location captured successfully!';
+                    if (coordsText) coordsText.textContent = `Lat: ${latitude.toFixed(6)}, Lon: ${longitude.toFixed(6)} (±${Math.round(accuracy)}m)`;
+                    if (captureBtn) {
+                        captureBtn.disabled = false;
+                        captureBtn.textContent = '✓ GPS CAPTURED';
+                    }
+                    
+                    showNotification('GPS location captured successfully', 'success');
+                },
+                (error) => {
+                    // Error
+                    if (statusIcon) {
+                        statusIcon.classList.remove('loading', 'success');
+                        statusIcon.classList.add('error');
+                    }
+                    
+                    let errorMessage = 'Failed to capture GPS location';
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            errorMessage = 'GPS permission denied. Please enable location access.';
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            errorMessage = 'GPS position unavailable. Please try again.';
+                            break;
+                        case error.TIMEOUT:
+                            errorMessage = 'GPS request timed out. Please try again.';
+                            break;
+                    }
+                    
+                    if (statusText) statusText.textContent = errorMessage;
+                    if (captureBtn) {
+                        captureBtn.disabled = false;
+                        captureBtn.textContent = '📍 TRY AGAIN';
+                    }
+                    
+                    showNotification(errorMessage, 'error');
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 120000, // 2 minutes (120 seconds)
+                    maximumAge: 0
+                }
+            );
+        }
+
         // Close modals when clicking outside
         document.getElementById('draftsModal').addEventListener('click', function(e) {
             if (e.target === this) {
@@ -2226,6 +2612,382 @@
                 cancelDraftName();
             }
         });
+
+        document.getElementById('analysisModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeAnalysisModal();
+            }
+        });
+
+        // ============================================
+        // ANALYSIS DASHBOARD FUNCTIONS
+        // ============================================
+        async function openAnalysisModal() {
+            const modal = document.getElementById('analysisModal');
+            const body = document.getElementById('analysisBody');
+            
+            modal.classList.add('show');
+            body.innerHTML = '<div class="analysis-loading"><p>Loading analysis data...</p></div>';
+            
+            try {
+                // Fetch data from Google Apps Script
+                const response = await fetch(CONFIG.SCRIPT_URL + '?action=getAnalysis', {
+                    method: 'GET'
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    renderAnalysisDashboard(data.data);
+                } else {
+                    throw new Error(data.message || 'Failed to load data');
+                }
+            } catch (error) {
+                console.error('Analysis error:', error);
+                body.innerHTML = `
+                    <div class="analysis-error">
+                        <p>⚠️ Unable to load analysis data</p>
+                        <p style="font-size: 12px; margin-top: 10px;">${error.message}</p>
+                        <p style="font-size: 12px; margin-top: 10px;">Please ensure the Google Apps Script is properly deployed and the data sheet contains survey responses.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function closeAnalysisModal() {
+            document.getElementById('analysisModal').classList.remove('show');
+        }
+
+        function renderAnalysisDashboard(data) {
+            const body = document.getElementById('analysisBody');
+            
+            // Create dashboard HTML
+            let html = `
+                <!-- KEY STATISTICS -->
+                <div class="dashboard-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">TOTAL SUBMISSIONS</div>
+                        <div class="stat-value">${data.totalSubmissions}</div>
+                        <div class="stat-sublabel">Media institutions surveyed</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">TOTAL EMPLOYEES</div>
+                        <div class="stat-value">${data.totalEmployees.toLocaleString()}</div>
+                        <div class="stat-sublabel">Across all media houses</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">FEMALE EMPLOYEES</div>
+                        <div class="stat-value">${data.femalePercentage}%</div>
+                        <div class="stat-sublabel">${data.totalFemale.toLocaleString()} out of ${data.totalEmployees.toLocaleString()}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">WOMEN IN LEADERSHIP</div>
+                        <div class="stat-value">${data.leadershipFemalePercentage}%</div>
+                        <div class="stat-sublabel">${data.leadershipFemale} out of ${data.totalLeadership} positions</div>
+                    </div>
+                </div>
+
+                <!-- MEDIA TYPE DISTRIBUTION -->
+                <div class="chart-container">
+                    <div class="chart-title">MEDIA TYPE DISTRIBUTION</div>
+                    <canvas id="mediaTypeChart" class="chart-canvas"></canvas>
+                </div>
+
+                <!-- REGIONAL DISTRIBUTION -->
+                <div class="chart-container">
+                    <div class="chart-title">REGIONAL DISTRIBUTION</div>
+                    <canvas id="regionalChart" class="chart-canvas"></canvas>
+                </div>
+
+                <!-- WORKFORCE GENDER COMPOSITION -->
+                <div class="chart-container">
+                    <div class="chart-title">WORKFORCE GENDER COMPOSITION</div>
+                    <canvas id="genderChart" class="chart-canvas"></canvas>
+                </div>
+
+                <!-- LEADERSHIP REPRESENTATION -->
+                <div class="chart-container">
+                    <div class="chart-title">LEADERSHIP REPRESENTATION BY GENDER</div>
+                    <canvas id="leadershipChart" class="chart-canvas"></canvas>
+                </div>
+
+                <!-- DEPARTMENTAL DISTRIBUTION -->
+                <div class="chart-container">
+                    <div class="chart-title">GENDER DISTRIBUTION BY DEPARTMENT</div>
+                    <canvas id="departmentChart" class="chart-canvas"></canvas>
+                </div>
+
+                <!-- BARRIERS TO ENTRY -->
+                <div class="chart-container">
+                    <div class="chart-title">BARRIERS WOMEN FACE AT ENTRY LEVEL</div>
+                    <canvas id="barriersChart" class="chart-canvas"></canvas>
+                </div>
+
+                <!-- ATTRITION REASONS -->
+                <div class="chart-container">
+                    <div class="chart-title">REASONS FOR WOMEN LEAVING</div>
+                    <canvas id="attritionChart" class="chart-canvas"></canvas>
+                </div>
+            `;
+            
+            body.innerHTML = html;
+            
+            // Render charts
+            setTimeout(() => {
+                renderMediaTypeChart(data.mediaTypes);
+                renderRegionalChart(data.regions);
+                renderGenderChart(data);
+                renderLeadershipChart(data);
+                renderDepartmentChart(data);
+                renderBarriersChart(data.barriers);
+                renderAttritionChart(data.attritionReasons);
+            }, 100);
+        }
+
+        function renderMediaTypeChart(mediaTypes) {
+            const ctx = document.getElementById('mediaTypeChart');
+            if (!ctx) return;
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(mediaTypes),
+                    datasets: [{
+                        label: 'Number of Media Houses',
+                        data: Object.values(mediaTypes),
+                        backgroundColor: '#004080',
+                        borderColor: '#004080',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderRegionalChart(regions) {
+            const ctx = document.getElementById('regionalChart');
+            if (!ctx) return;
+
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(regions),
+                    datasets: [{
+                        data: Object.values(regions),
+                        backgroundColor: [
+                            '#004080',
+                            '#0056b3',
+                            '#17a2b8',
+                            '#28a745',
+                            '#ffc107'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderGenderChart(data) {
+            const ctx = document.getElementById('genderChart');
+            if (!ctx) return;
+
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Female Employees', 'Male Employees'],
+                    datasets: [{
+                        data: [data.totalFemale, data.totalMale],
+                        backgroundColor: ['#dc3545', '#004080'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderLeadershipChart(data) {
+            const ctx = document.getElementById('leadershipChart');
+            if (!ctx) return;
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Leadership Positions', 'Non-Leadership Positions'],
+                    datasets: [{
+                        label: 'Women',
+                        data: [data.leadershipFemale, data.nonLeadershipFemale],
+                        backgroundColor: '#dc3545',
+                        borderWidth: 1
+                    }, {
+                        label: 'Men',
+                        data: [data.leadershipMale, data.nonLeadershipMale],
+                        backgroundColor: '#004080',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderDepartmentChart(data) {
+            const ctx = document.getElementById('departmentChart');
+            if (!ctx) return;
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Technical Unit', 'Operations/Admin/HR', 'Newsroom/Field'],
+                    datasets: [{
+                        label: 'Women',
+                        data: [data.technicalFemale, data.operationsFemale, data.newsroomFemale],
+                        backgroundColor: '#dc3545',
+                        borderWidth: 1
+                    }, {
+                        label: 'Men',
+                        data: [data.technicalMale, data.operationsMale, data.newsroomMale],
+                        backgroundColor: '#004080',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderBarriersChart(barriers) {
+            const ctx = document.getElementById('barriersChart');
+            if (!ctx) return;
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(barriers),
+                    datasets: [{
+                        label: 'Number of Organizations',
+                        data: Object.values(barriers),
+                        backgroundColor: '#ffc107',
+                        borderColor: '#ffc107',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderAttritionChart(reasons) {
+            const ctx = document.getElementById('attritionChart');
+            if (!ctx) return;
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(reasons),
+                    datasets: [{
+                        label: 'Number of Organizations',
+                        data: Object.values(reasons),
+                        backgroundColor: '#dc3545',
+                        borderColor: '#dc3545',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
 
         init();
     </script>
